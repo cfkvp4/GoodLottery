@@ -1,182 +1,200 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Good Lottery</title>
-    <link rel="icon" type="/png" href="favicon-16x16.png">
+    <link rel="icon" type="image/png" href="favicon.png">
     <link rel="stylesheet" href="style.css">
-     <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
-     <h1>GoodDollar Lottery</h1>
-      <div class="header-buttons">
-             <button id="show-qr-button">Send from Mobile</button>
-            <button id="show-metamask-button">Send from MetaMask</button>
-        </div>
-    <div class="container">
+    <div class="cyberpunk-bg"></div>
 
-      <div class="jackpot-info">
-          <p>Jackpot Prize</p>
-           <span>ETH Address: <span id="walletAddress">0x9232B44496F36c033b02645Dcedb09d0a69a19c2</span></span>
-           <p> Celo Balance:  <span id="celoBalance">Loading...</span></p>
-            <p>Fuse Balance: <span id="fuseBalance">Loading...</span></p>
-           <p><a href="https://www.powerball.com/" target="_blank" style="font-weight: bold; color:#007bff">Check Winning Numbers at Powerball.com</a></p>
+    <header class="header">
+        <div class="container">
+            <h1 class="logo">Good<span class="neon-text">Lottery</span></h1>
+              <div class="header-buttons">
+                  <button id="show-qr-button" class="neon-btn"><i class="fas fa-mobile-alt"></i> Mobile</button>
+                 <button id="show-metamask-button" class="neon-btn"><i class="fab fa-ethereum"></i> MetaMask</button>
+             </div>
         </div>
+    </header>
 
-        <div class="section" id="qr-section">
-            <h2>Send 1000 G$ (Celo/Fuse)</h2>
-              <div class="input-container">
-                <p>Select 2 numbers from 1 to 69 and 1 Powerball number from 1 to 26</p>
-                </p>Format: "1000.xxXXxx" to select your numbers.</p>
-            </div>
-              <button id="generate-button-qr">quick pick</button>
-               <p id="qr-generated-number" class="generated-numbers"></p>
-            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
-                <img id="qr-code" src="" alt="QR Code">
-                <p id="qr-address">0x9232B44496F36c033b02645Dcedb09d0a69a19c2</p>
-            </div>
-        </div>
-
-        <div class="section" id="transaction-container" style="display: none;">
-            <form id="transaction-form" >
-                <h2>Send 1000 G$ (Celo/Fuse)</h2>
-                <div class="input-container">
-                     <p>Select 2 numbers from 1 to 69 and 1 Powerball number from 1 to 26</p>
-                     <p></p>Format: "1000.xxXXxx" to select your numbers.</p>
-               </div>
-                  <label for="amount">Enter Amount (in decimals, e.g., 1000.036926):
-                 <input type="text" id="amount"  placeholder="1000.000000" pattern="[0-9.]*"></label>
-                <button id="generate-button" type="button">quick pick</button>
-                <button type="submit">Send Transaction</button>
-               <p class="validation-message" id="validation-message">
-                    Please enter valid numbers (1-69, 1-69, 1-26).
-                 </p>
-            </form>
-            <p id="status"></p>
-        </div>
-
-         <div class="section">
-            <h2>How it Works</h2>
+    <main class="container">
+        
+        <section id="qr-section" class="active">
+              <h2 class="neon-text"><i class="fas fa-qrcode"></i> Send 1000 G$ Good Dollar (Celo)</h2>
              <div class="content">
-            <p>
-              This blockchain-based lottery leverages the transparency and security of blockchain technology to ensure fair and impartial draws. The lottery numbers are included in the decimal portion of the amount you send in the transaction, guaranteeing each participant a unique and personalized combination. This process, determined before being sent to the blockchain, is recorded immutably, enhancing the system's reliability.
-            </p>
-          </p> Compatible Networks:<b> Celo and Fuse</b></p>
-        </p> Two networks, one lottery.</p>
-
-            <p><b>Quick Guide to Play:</b></p>
-             <ul>
-                <li>Send 1000 G$: Use the decimal part to choose your numbers.</li>
-                <li>Numbers: Generate two pairs (01-69) and a pair (01-26) with decimals.</li>
-                <li>Results: Compare your numbers with the <a href="https://www.powerball.com/" target="_blank" style="font-weight: bold; color:#007bff">Powerball draw</a>.</li>
-                <li>Win! If the two white balls and the red ball match.</li>
-             </ul>
+                <div class="input-container">
+                 <p><i class="fas fa-info-circle"></i> Select 2 numbers from 1 to 69 and 1 Powerball number from 1 to 26</p>
+                 <p><i class="fas fa-exclamation-circle"></i> Format: "1000.xxXXxx" to select your numbers.</p>
+            </div>
+             <button id="generate-button-qr" class="neon-btn"><i class="fas fa-dice-d6"></i> Quick Pick</button>
+              <p id="qr-generated-number" class="generated-numbers"></p>
+           <div class="qr-code-container">
+             <div class="qr-code-frame">
+                 <img id="qr-code" src="" alt="QR Code">
               </div>
-        </div>
+             <p id="qr-address">0x9232B44496F36c033b02645Dcedb09d0a69a19c2</p>
+         </div>
+            </div>
+       </section>
 
+         <section id="transaction-container" class="active" style="display: none;">
+              <h2 class="neon-text"><i class="fab fa-ethereum"></i> Send 1000 G$ Good Dollar (Celo)</h2>
+              <form id="transaction-form" class="content">
+                <div class="input-container">
+                  <p><i class="fas fa-info-circle"></i> Select 2 numbers from 1 to 69 and 1 Powerball number from 1 to 26</p>
+                   <p><i class="fas fa-exclamation-circle"></i> Format: "1000.xxXXxx" to select your numbers.</p>
+               </div>
+               
+                <label for="network"><i class="fas fa-network-wired"></i> Select Network:</label>
+                <select id="network" class="network-selector">
+                  <option value="celo">Celo</option>
+                </select>
+               <label for="amount"><i class="fas fa-hand-holding-usd"></i> Amount:</label>
+                   <input type="text" id="amount" placeholder="1000.000000" pattern="[0-9.]*">
+               <button id="generate-button" type="button" class="neon-btn"><i class="fas fa-dice-d6"></i> Quick Pick</button>
+                  <button type="submit" class="neon-btn"><i class="fas fa-paper-plane"></i> Send Transaction</button>
+               <p class="validation-message" id="validation-message">
+               Please enter valid numbers (1-69, 1-69, 1-26).
+               </p>
+               </form>
+            <p id="status" class="status-message"></p>
+         </section>
 
-        <div class="section">
-            <h2>Detailed Guide</h2>
-               <div class="content">
-               <h3>Number Generation:</h3>
-            <p>
-                Lottery numbers are determined by the decimal part of your 1000 G$ transaction.
-             </p>
-            <ul>
-                <li><b>Decimal Format:</b> You must send 1000 G$ plus a six-digit decimal part (example: 1000.xxxxxx).</li>
-                <li><b>Two Numbers (01-69):</b> The first two decimal digits generate a number between 01 and 69.</li>
-                 <li><b>Two Numbers (01-69):</b> The next two decimal digits generate another number between 01 and 69.</li>
-                <li><b>One Number (01-26):</b> The last two decimal digits generate a number between 01 and 26.</li>
-            </ul>
-           <h3>Draw and Match:</h3>
-            <ul>
-                <li><b>Based on Powerball:</b> The winning numbers are based on the official Powerball draw.</li>
-                <li><b>Two White Balls:</b> You must match two of the five white ball numbers drawn in any order.</li>
-                <li><b>One Red Ball:</b> You must match the red ball number drawn.</li>
-            </ul>
-            <p>To win the jackpot, you must match:</p>
-            <ul>
-                <li>Two numbers between 01 and 69</li>
-                <li>One number between 01 and 26</li>
-            </ul>
-          </div>
-        </div>
-
-         <div class="section">
-            <h2>Check if You Won</h2>
-              <div class="content">
-             <p>The draw is based on the numbers from Powerball. To win, you must correctly predict three numbers:</p>
-             <ul>
-                <li><b>Two white balls:</b> They must match two of the five white balls drawn in any order.</li>
-                <li><b>One red ball (Power Ball):</b> It must match the red ball drawn.</li>
-            </ul>
-             <p>The lottery numbers are generated by the decimal part of your transaction.</p>
-
-            <h3>Example:</h3>
-             <p>Suppose your lottery numbers are: 123420</p>
-             <p>And the winning <a href="https://www.powerball.com/" target="_blank" style="font-weight: bold; color:#007bff">Powerball</a> numbers are: 12 05 34 52 68 (White Balls), 20 (Red Ball)</p>
-            <p>In this case, you've won! Because your two white balls (12, 34) match two of the winning white balls, and the red ball (20) matches the winning red ball.</p>
-
-
-           <h3>How to Read the Numbers?</h3>
-            <p>Your numbers are composed of three parts:</p>
-             <ul>
-                <li><span class="number-example"><span class="blue">First two numbers (Blue):</span> Represent two numbers between 1 and 69.</span></li>
-                <li><span class="number-example"><span class="green">Second two numbers (Green):</span> Represent two numbers between 1 and 69.</span></li>
-                <li><span class="number-example"><span class="red">Last two numbers (Red):</span> Represent a number between 01 and 26.</span></li>
-            </ul>
-             <p>To win, you must have matches with the Power Ball numbers.</p>
-               <p>If your numbers match the winning numbers, congratulations! You have won the jackpot. Check the "Claim Your Prize" section to learn how to claim your winnings.</p>
+           <section class="jackpot-info card">
+              <h2 class="neon-text"><i class="fas fa-trophy"></i> Jackpot Prize</h2>
+             <div class="content">
+               <p><i class="fas fa-wallet"></i> Address: <span id="walletAddress">0x9232B44496F36c033b02645Dcedb09d0a69a19c2</span></p>
+                <p><i class="fas fa-coins"></i> Celo Balance: <span id="celoBalance">Loading...</span></p>
+                 <a href="https://www.powerball.com/" target="_blank" class="neon-link"><i class="fas fa-ticket-alt"></i> Powerball.com</a>
+               <p> Win! If the two white balls and the red ball match.</p>
            </div>
-        </div>
+       </section>
+           
+        <section class="card">
+            <h2 class="neon-text"><i class="fas fa-question-circle"></i> How it Works</h2>
+            <div class="content">
+                <p>
+                    This blockchain-based lottery leverages the transparency and security of blockchain technology to ensure fair and impartial draws. The lottery numbers are included in the decimal portion of the amount you send in the transaction, guaranteeing each participant a unique and personalized combination. This process, determined before being sent to the blockchain, is recorded immutably, enhancing the system's reliability.
+                </p>
+                 </p> Compatible Networks:<b> Celo </b></p>
+                    </p> One network, one lottery.</p>
+                <p><b>Quick Guide to Play:</b></p>
+                <ul>
+                    <li>Send 1000 G$: Use the decimal part to choose your numbers.</li>
+                     <li>Numbers: Generate two pairs (01-69) and a pair (01-26) with decimals.</li>
+                     <li>Results: Compare your numbers with the <a href="https://www.powerball.com/" target="_blank" class="neon-link">Powerball draw</a>.</li>
+                     <li>Win! If the two white balls and the red ball match.</li>
+                 </ul>
+             </div>
+        </section>
 
-        <div class="section">
-            <h2>Important Information of the Powerball Draw:</h2>
+
+        <section class="card">
+            <h2 class="neon-text"><i class="fas fa-list-ul"></i> Detailed Guide</h2>
+            <div class="content">
+               <h3>Number Generation:</h3>
+                <p>
+                     Lottery numbers are determined by the decimal part of your 1000 G$ transaction.
+                </p>
+                <ul>
+                    <li><b>Decimal Format:</b> You must send 1000 G$ plus a six-digit decimal part (example: 1000.xxxxxx).</li>
+                     <li><b>Two Numbers (01-69):</b> The first two decimal digits generate a number between 01 and 69.</li>
+                    <li><b>Two Numbers (01-69):</b> The next two decimal digits generate another number between 01 and 69.</li>
+                   <li><b>One Number (01-26):</b> The last two decimal digits generate a number between 01 and 26.</li>
+                </ul>
+                <h3>Draw and Match:</h3>
+                <ul>
+                    <li><b>Based on Powerball:</b> The winning numbers are based on the official Powerball draw.</li>
+                     <li><b>Two White Balls:</b> You must match two of the five white ball numbers drawn in any order.</li>
+                    <li><b>One Red Ball:</b> You must match the red ball number drawn.</li>
+                 </ul>
+                 <p>To win the jackpot, you must match:</p>
+                 <ul>
+                    <li>Two numbers between 01 and 69</li>
+                      <li>One number between 01 and 26</li>
+                </ul>
+                <p>The winner has 30 days to claim their prize. After that period, the ticket will expire, and the prize can no longer be claimed. The countdown begins on the day the winning numbers are announced.</p>
+             </div>
+        </section>
+
+
+        <section class="card">
+              <h2 class="neon-text"><i class="fas fa-check-circle"></i> Check if You Won</h2>
+            <div class="content">
+              <p>The draw is based on the numbers from Powerball. To win, you must correctly predict three numbers:</p>
+                <ul>
+                   <li><b>Two white balls:</b> They must match two of the five white balls drawn in any order.</li>
+                   <li><b>One red ball (Power Ball):</b> It must match the red ball drawn.</li>
+                </ul>
+                <p>The lottery numbers are generated by the decimal part of your transaction.</p>
+                 <h3>Example:</h3>
+                <p>Suppose your lottery numbers are: 123420</p>
+               <p>And the winning <a href="https://www.powerball.com/" target="_blank" class="neon-link">Powerball</a> numbers are: 12 05 34 52 68 (White Balls), 20 (Red Ball)</p>
+                <p>In this case, you've won! Because your two white balls (12, 34) match two of the winning white balls, and the red ball (20) matches the winning red ball.</p>
+                 <h3>How to Read the Numbers?</h3>
+                <p>Your numbers are composed of three parts:</p>
+                <ul>
+                 <li><span class="number-example"><span class="blue">First two numbers (Yellow):</span> Represent two numbers between 1 and 69.</span></li>
+                  <li><span class="number-example"><span class="green">Second two numbers (Green):</span> Represent two numbers between 1 and 69.</span></li>
+                  <li><span class="number-example"><span class="red">Last two numbers (Red):</span> Represent a number between 01 and 26.</span></li>
+                </ul>
+                <p>To win, you must have matches with the Power Ball numbers.</p>
+                <p>If your numbers match the winning numbers, congratulations! You have won the jackpot. Check the "Claim Your Prize" section to learn how to claim your winnings.</p>
+            </div>
+        </section>
+
+
+       <section class="card">
+             <h2 class="neon-text"><i class="fas fa-info"></i> Powerball Draw Info</h2>
            <div class="content">
             <p>Powerball draws are held on Mondays, Wednesdays, and Saturdays.</p>
-             <ul>
-                 <li><b>Official Draw Time:</b> 10:59 pm ET (Eastern Time)</li>
-                 <li><b>Ticket Purchase Closing Time:</b> 9:00 pm ET</li>
-            </ul>
-
-            <p>All tickets purchased after 9:00 pm ET will participate in the next game.</p>
-            <p><b>Note:</b> Please verify the official draw time to avoid any inconvenience.</p>
+               <ul>
+                     <li><b>Official Draw Time:</b> 10:59 pm ET (Eastern Time)</li>
+                     <li><b>Ticket Purchase Closing Time:</b> 9:00 pm ET</li>
+               </ul>
+             <p>All tickets purchased after 9:00 pm ET will participate in the next game.</p>
+              <p><b>Note:</b> Please verify the official draw time to avoid any inconvenience.</p>
              <p><b>Prize Accumulation:</b> If there is no winner in a draw, the prize accumulates for the next draw, and so on until there is a winner.</p>
-             </div>
-       </div>
+         </div>
+       </section>
 
 
-        <div class="section">
-            <h2>Claim Your Prize</h2>
-              <div class="content">
-           <h3>Steps to Claim Your Prize:</h3>
-            <p><b>Pay the review fee:</b></p>
-            <ul>
-                <li><b>Address:</b> 0x9232B44496F36c033b02645Dcedb09d0a69a19c2</li>
-                 <li><b>Network:</b> Celo or Fuse</li>
-                <li><b>Amount:</b> 100000 G$ (equivalent to a 5 USD fee).</li>
-            </ul>
-            <p><b>Automatic Verification:</b></p>
-            <p>Once the transaction is received, the smart contract will validate your ticket numbers and pre-authorize the prize payment.</p>
-
-            <h3>Important:</h3>
-            <p><b>Avoid Invalid Requests:</b> To ensure a fair process, a refundable review fee of 5 USD in the native token of the network in which you participated is established.</p>
-              <p><b>Refund:</b> The fee will be refunded to the winners after verifying the authenticity of their ticket.</p>
-            <p><b>Warning:</b> Deposits made to this address will not be refunded if you are not a winner and will be considered a donation.</p>
-
-            <h3>Beware of Scams!</h3>
-            <ul>
-                  <li><b>Official channel:</b> This is the only valid means to claim your prize.</li>
-                 <li><b>Caution:</b> Do not trust unsolicited emails or messages. The organization will never contact you first.</li>
-                <li><b>Verify:</b> Confirm that the address is exactly 0x9232B44496F36c033b02645Dcedb09d0a69a19c2 before sending any transaction.</li>
-                <li><b>Protection:</b> Never share personal or financial information with third parties.</li>
-            </ul>
+        <section class="card">
+            <h2 class="neon-text"><i class="fas fa-gift"></i> Claim Your Prize</h2>
+            <div class="content">
+                <h3>Steps to Claim Your Prize:</h3>
+                <p><b>Pay the review fee:</b></p>
+                 <ul>
+                     <li><b>Address:</b> 0x9232B44496F36c033b02645Dcedb09d0a69a19c2</li>
+                    <li><b>Network:</b> Celo</li>
+                    <li><b>Amount:</b> 20000 G$ (equivalent to a 1 USD fee).</li>
+                </ul>
+                <p><b>The winner has 30 days to claim their prize. After that period, the ticket will expire, and the prize can no longer be claimed. The countdown begins on the day the winning numbers are announced.</b></p>
+                <p><b>Automatic Verification:</b></p>
+                <p>Once the transaction is received, the smart contract will validate your ticket numbers and pre-authorize the prize payment.</p>
+                <h3>Important:</h3>
+                <p><b>Avoid Invalid Requests:</b> To ensure a fair process, a refundable review fee of 1 USD in the native token of the network in which you participated is established.</p>
+                <p><b>Refund:</b> The fee will be refunded to the winners after verifying the authenticity of their ticket.</p>
+                 <p><b>Warning:</b> Deposits made to this address will not be refunded if you are not a winner and will be considered a donation.</p>
+                 <h3>Beware of Scams!</h3>
+                <ul>
+                     <li><b>Official channel:</b> This is the only valid means to claim your prize.</li>
+                   <li><b>Caution:</b> Do not trust unsolicited emails or messages. The organization will never contact you first.</li>
+                    <li><b>Verify:</b> Confirm that the address is exactly 0x9232B44496F36c033b02645Dcedb09d0a69a19c2 before sending any transaction.</li>
+                   <li><b>Protection:</b> Never share personal or financial information with third parties.</li>
+              </ul>
           </div>
-        </div>
-    </div>
+       </section>
+    </main>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.10.0/web3.min.js"></script>
     <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
-    <script src="script.js"></script>
+   <script src="script.js"></script>
 </body>
 </html>
