@@ -12,6 +12,9 @@ const qrAddress = document.getElementById('qr-address');
 const showQrButton = document.getElementById('show-qr-button');
 const showMetamaskButton = document.getElementById('show-metamask-button');
 const transactionContainer = document.getElementById('transaction-container');
+const celoBalanceElement = document.getElementById('celoBalance');
+const fuseBalanceElement = document.getElementById('fuseBalance');
+
 
 // Function to generate random numbers according to the rules
 function generateRandomNumber() {
@@ -178,3 +181,46 @@ transactionForm.addEventListener('submit', async (event) => {
         }
   });
  });
+// --- Function to get token balance ---
+async function getTokenBalance(rpc, contractAddress, address, symbol, balanceElement) {
+    try {
+        const provider = new ethers.providers.JsonRpcProvider(rpc);
+        const contract = new ethers.Contract(
+            contractAddress,
+             [
+                "function balanceOf(address) view returns (uint256)",
+                "function decimals() view returns (uint8)"
+            ],
+            provider
+        );
+        const balance = await contract.balanceOf(address);
+        const decimals = await contract.decimals();
+        const formattedBalance = ethers.utils.formatUnits(balance, decimals);
+        balanceElement.textContent = `${formattedBalance} ${symbol}`;
+    } catch (error) {
+        console.error(`Error fetching ${symbol} balance:`, error);
+        balanceElement.textContent = "Error loading balance";
+    }
+}
+
+
+// --- Fetch balances for Celo and Fuse on load ---
+document.addEventListener('DOMContentLoaded', () => {
+     const targetAddress = "0x9232B44496F36c033b02645Dcedb09d0a69a19c2";
+    // Fetch Celo balance
+    getTokenBalance(
+        "https://forno.celo.org",
+        "0x62b8b11039fcfe5ab0c56e502b1c372a3d2a9c7a",
+         targetAddress,
+        "G$",
+        celoBalanceElement
+    );
+    // Fetch Fuse balance
+    getTokenBalance(
+        "https://rpc.fuse.io",
+        "0x495d133B938596C9984d462F007B676bDc57eCEC",
+         targetAddress,
+        "G$",
+        fuseBalanceElement
+    );
+});
