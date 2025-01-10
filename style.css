@@ -1,0 +1,295 @@
+body {
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+    background-color: #f8f9fa;
+    color: #343a40;
+}
+ h1 {
+    text-align: center;
+    color: #007bff;
+    margin-bottom: 10px;
+    font-size: 2.5em;
+    border-bottom: 2px solid #e9ecef;
+    padding-bottom: 10px;
+}
+ .jackpot-info {
+    text-align: center;
+    margin-bottom: 10px;
+}
+ .jackpot-info p {
+      margin: 5px 0;
+      font-size: 1.1em;
+     font-weight: bold;
+    color: #28a745;
+ }
+  .jackpot-info span {
+     font-size: 0.9em;
+      color: #6c757d;
+    font-weight: normal;
+    display: block; /* Make the ETH address a block-level element */
+    margin-top: 5px;
+}
+ .header-buttons {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    width: 100%; /* Full width of the container */
+    margin-bottom: 10px; /* Add spacing below the buttons */
+}
+ .header-buttons button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin: 0 5px; /* Space between buttons, auto margins to distribute */
+    font-size: 0.9em; /* Adjust as necessary */
+ }
+
+.header-buttons button:hover {
+     background-color: #0056b3;
+ }
+
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 800px;
+    width: 95%;
+    padding: 20px;
+    box-sizing: border-box;
+    gap: 20px;
+}
+.section {
+    width: 100%;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+    border: 1px solid #e9ecef;
+     box-sizing: border-box;
+    overflow: hidden; /* Hide content when collapsed */
+}
+.section:hover {
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+.section h2 {
+    text-align: center;
+    color: #007bff;
+    margin-bottom: 0;
+    border-bottom: 2px solid #e9ecef;
+    padding: 0px;
+     cursor: pointer;
+     transition: background-color 0.3s ease;
+}
+.section h2:hover{
+     background-color: #f0f0f0;
+
+}
+   .section .content {
+     padding: 0 20px 20px 20px;
+     display: none; /* Initially hide the content */
+    transition: max-height 0.5s ease-in-out;
+  }
+.section.active .content {
+   display: block;
+}
+.section p {
+    line-height: 1.7;
+    margin-bottom: 15px;
+}
+.section ul {
+    margin-left: 20px;
+    margin-bottom: 15px;
+}
+
+ .section ul li {
+    margin-bottom: 5px;
+}
+
+#qr-code {
+    margin: 20px auto;
+    max-width: 150px;
+     display: block;
+
+}
+ #qr-address {
+    text-align: center;
+     margin-bottom: 20px; /* Add space between address and following elements */
+      word-wrap: break-word; /* Ensure long addresses wrap properly */
+     color: #28a745; /* Example color */
+    font-weight: bold;
+    font-size: 0.9em;
+ }
+#toggle-form {
+    cursor: pointer;
+    color: #007bff;
+    text-decoration: underline;
+     display: inline-block;
+     margin-top: 10px;
+}
+ #toggle-form:hover {
+     color: #0056b3;
+ }
+   #transaction-form label {
+        display: flex;
+        flex-direction: column;
+        align-items: center; /* Center horizontally */
+        margin-bottom: 10px; /* Add some space between sections */
+        text-align: center; /* Center text within the container */
+
+    }
+#transaction-form label {
+    display: block;
+    margin-bottom: 10px;
+}
+   #transaction-form input[type="text"] {
+        width: 60%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ced4da;
+         border-radius: 4px;
+        /* Ensure input is treated as a number for validation */
+          -moz-appearance: textfield;
+           text-align: center;
+           height: 40px;  /* Increase the height */
+             font-size: 1.5em; /* Increase the font size */
+    }
+ #transaction-form button[type="submit"] {
+      background-color: #28a745;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        display: block; /* Make it a block element */
+        margin: 10px auto; /* Center horizontally and provide spacing */
+    }
+#transaction-form button[type="submit"]:hover {
+   background-color: #218838;
+}
+#transaction-form button[id="generate-button"] {
+      background-color: #007bff;
+       color: white;
+         border: none;
+       padding: 10px 20px;
+       border-radius: 5px;
+       cursor: pointer;
+       transition: background-color 0.3s ease;
+        margin: 10px auto;
+        display: block;
+}
+   #transaction-form button[id="generate-button"]:hover {
+       background-color: #0056b3;
+}
+.number-example {
+   font-size: 1.1em;
+    margin: 10px 0;
+    font-weight: bold;
+
+}
+  .number-example span.blue { color: blue; }
+.number-example span.green { color: green; }
+.number-example span.red { color: red; }
+#status {
+    margin-top: 10px;
+    font-weight: bold;
+     color: #28a745;
+    text-align: center;
+}
+.section h3 {
+   color: #007bff;
+    margin-top: 20px;
+     margin-bottom: 10px;
+
+}
+#qr-generated-number {
+   margin-top: 10px;
+    font-weight: bold;
+    color: #000000;
+    text-align: center;
+}
+  #qr-section button[id="generate-button-qr"] {
+      background-color: #007bff;
+       color: white;
+         border: none;
+       padding: 10px 20px;
+       border-radius: 5px;
+       cursor: pointer;
+       transition: background-color 0.3s ease;
+        margin-top: 5px;
+     display: block;
+      margin: 10px auto;
+}
+   #qr-section button[id="generate-button-qr"]:hover {
+       background-color: #0056b3;
+}
+.validation-message {
+     color: red;
+    font-size: 0.9em;
+    margin-top: 5px;
+    text-align: center;
+   display: none; /* Start hidden */
+    transition: all 0.3s ease;
+ }
+   .validation-message.show {
+      display: block;
+   }
+.input-container {
+     display: flex;
+        flex-direction: column;
+        align-items: center; /* Center horizontally */
+        margin-bottom: 10px; /* Add some space between sections */
+        text-align: center; /* Center text within the container */
+    }
+ .input-container p {
+     margin-bottom: 5px; /* Reduce the bottom margin for better spacing */
+    }
+  .generated-numbers {
+    font-size: 1.3em; /* Make the numbers larger */
+    font-weight: bold;
+    text-align: center; /* Center the text */
+    color: #28a745; /* Set a base color */
+      margin-top: 10px;
+    }
+  .generated-numbers span.blue { color: blue; }
+  .generated-numbers span.green { color: green; }
+  .generated-numbers span.red { color: red; }
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 600px) {
+     h1 {
+        font-size: 2em;
+    }
+     .header-buttons {
+        flex-direction: column; /* Stack buttons on smaller screens */
+        align-items: center; /* Center buttons horizontally */
+    }
+     .header-buttons button {
+        font-size: 0.8em;
+        margin: 5px 0; /* Reduce the spacing between buttons */
+        width: auto;
+    }
+
+    .container {
+        padding: 10px;
+    }
+     .section {
+        padding: 5px;
+    }
+    .section h2 {
+        font-size: 1.4em;
+    }
+    .number-example {
+           font-size: 1em;
+     }
+}
