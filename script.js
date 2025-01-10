@@ -8,44 +8,43 @@ const generateButtonQR = document.getElementById('generate-button-qr');
 const validationMessage = document.getElementById('validation-message');
 const qrCodeImg = document.getElementById('qr-code');
 const qrAddress = document.getElementById('qr-address');
-
 const showQrButton = document.getElementById('show-qr-button');
 const showMetamaskButton = document.getElementById('show-metamask-button');
 const transactionContainer = document.getElementById('transaction-container');
 const celoBalanceElement = document.getElementById('celoBalance');
-const fuseBalanceElement = document.getElementById('fuseBalance');
+const networkSelect = document.getElementById('network');
 
+const celoContractAddress = "0x62b8b11039fcfe5ab0c56e502b1c372a3d2a9c7a";
+const amountToSend = "1000"; // Amount of G$ to send
+const celoChainId = "42220"; // Chain ID for Celo Mainnet
 
-// Function to generate random numbers according to the rules
+// Function to generate random numbers
 function generateRandomNumber() {
-    // Function to generate a random number between min (inclusive) and max (exclusive)
     const getRandom = (min, max) => {
         let num;
-        do{
+        do {
             num = Math.floor(Math.random() * (max - min)) + min;
-        }while (num === 0 || num === 70);
+        } while (num === 0 || num === 70);
         return String(num).padStart(2, '0');
     };
-    // Generate two random numbers between 1 and 69
     const num1 = getRandom(1, 70);
     const num2 = getRandom(1, 70);
-    // Generate one random number between 1 and 26
     const num3 = getRandom(1, 27);
-    // Combine the numbers and return the result
     return `<span class="blue">${num1}</span><span class="green">${num2}</span><span class="red">${num3}</span>`;
 }
 
+// Event listener for generating random numbers for MetaMask form
 generateButtonMetaMask.addEventListener('click', () => {
     const randomNumber = generateRandomNumber();
-     const formattedNumber = randomNumber.replace(/<span class="blue">(\d{2})<\/span><span class="green">(\d{2})<\/span><span class="red">(\d{2})<\/span>/, '$1$2$3');
+    const formattedNumber = randomNumber.replace(/<span class="blue">(\d{2})<\/span><span class="green">(\d{2})<\/span><span class="red">(\d{2})<\/span>/, '$1$2$3');
     document.getElementById('amount').value = `1000.${formattedNumber}`;
 });
-
+// Event listener for generating random numbers for QR code section
 generateButtonQR.addEventListener('click', () => {
-        qrGeneratedNumber.innerHTML = `1000.${generateRandomNumber()}`;
+    qrGeneratedNumber.innerHTML = `1000.${generateRandomNumber()}`;
 });
 
-
+// Function to generate QR code
 function generateQRCode(text, size = 150) {
     const qrcode = new QRCode(document.createElement("div"), {
         text: text,
@@ -55,139 +54,185 @@ function generateQRCode(text, size = 150) {
     return qrcode._el.firstChild.toDataURL("image/png");
 }
 qrCodeImg.src = generateQRCode(receiverAddress);
-  qrAddress.textContent = receiverAddress;
-// Restrict input in MetaMask Form to only allowed numbers
- const amountInput = document.getElementById('amount');
+qrAddress.textContent = receiverAddress;
+
+// Input restriction logic for amount
+const amountInput = document.getElementById('amount');
 let timeoutId = null;
 
 amountInput.addEventListener('input', function () {
     let value = this.value;
 
-   // Asegurar que el valor siempre comience con "1000."
     if (!value.startsWith("1000.")) {
         value = "1000." + value.replace(/[^0-9]/g, '');
-     }
+    }
 
     const parts = value.split('.');
     let decimalPart = parts[1] || "";
 
-    // Remover caracteres no numéricos
     decimalPart = decimalPart.replace(/\D/g, '');
+    decimalPart = decimalPart.slice(0, 6);
+    this.value = `1000.${decimalPart}`;
 
-    // Limitar a 6 dígitos en total
-     decimalPart = decimalPart.slice(0, 6);
-
-     // Reconstruir el valor
-     this.value = `1000.${decimalPart}`;
-
-    // Validar y mostrar mensajes de error si es necesario
-     const isValid = /^1000\.(\d{0,2})(\d{0,2})(\d{0,2})$/.test(this.value);
-     if (!isValid && decimalPart.length > 0) {
-        validationMessage.textContent = "Por favor, ingresa números válidos (1-69, 1-69, 1-26).";
-         validationMessage.style.display = 'block';
+    const isValid = /^1000\.(\d{0,2})(\d{0,2})(\d{0,2})$/.test(this.value);
+    if (!isValid && decimalPart.length > 0) {
+        validationMessage.textContent = "Please enter valid numbers (1-69, 1-69, 1-26).";
+        validationMessage.style.display = 'block';
 
         if (timeoutId) clearTimeout(timeoutId);
         timeoutId = setTimeout(() => {
-           validationMessage.style.display = 'none';
+            validationMessage.style.display = 'none';
         }, 3000);
     } else {
-       validationMessage.style.display = 'none';
+        validationMessage.style.display = 'none';
     }
 });
 
 amountInput.addEventListener('keydown', function (e) {
-    // Evitar borrar el prefijo "1000."
     if ((e.key === 'Backspace' || e.key === 'Delete') && this.selectionStart <= 5) {
         e.preventDefault();
     }
 });
-  showQrButton.addEventListener('click', () => {
-      qrSection.style.display = 'block';
-     transactionContainer.style.display = 'none';
-   });
-showMetamaskButton.addEventListener('click', () => {
-      qrSection.style.display = 'none';
-     transactionContainer.style.display = 'block';
+
+// Event listeners for showing QR code or MetaMask form
+showQrButton.addEventListener('click', () => {
+    qrSection.style.display = 'block';
+    transactionContainer.style.display = 'none';
 });
+showMetamaskButton.addEventListener('click', () => {
+    qrSection.style.display = 'none';
+    transactionContainer.style.display = 'block';
+});
+
+// Event listener for MetaMask transaction form submission
 transactionForm.addEventListener('submit', async (event) => {
     event.preventDefault();
-    const amount = document.getElementById('amount').value;
+    const amountInput = document.getElementById('amount').value;
 
-     if (!window.ethereum) {
+    if (!window.ethereum) {
         statusElement.textContent = 'MetaMask is not installed. Please install MetaMask to proceed.';
         statusElement.style.color = 'red'
         return;
     }
-
+    if (!amountInput || amountInput === '1000.'){
+         statusElement.textContent = 'Error: You must choose your ticket numbers before sending the transaction.';
+         statusElement.style.color = 'red';
+            return;
+        }
     const web3 = new Web3(window.ethereum);
-
     try {
+
+         const chainId = await window.ethereum.request({ method: 'eth_chainId' });
+       if (chainId !== `0x${parseInt(celoChainId).toString(16)}`) {
+            statusElement.textContent = 'Error: Connect manually to the Celo Network. Verify the network on Metamask.';
+            statusElement.style.color = 'red';
+             return;
+        }
+
         const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
         const senderAddress = accounts[0];
-        const valueInWei = web3.utils.toWei(amount, 'ether');
-
-
-        const transactionParameters = {
-            to: receiverAddress,
-            from: senderAddress,
-            value: web3.utils.toHex(valueInWei),
-        };
+        
+        const contract = new web3.eth.Contract(
+            [
+                {
+                    "constant": false,
+                    "inputs": [
+                        {
+                            "name": "to",
+                            "type": "address"
+                        },
+                        {
+                            "name": "value",
+                            "type": "uint256"
+                        }
+                    ],
+                    "name": "transfer",
+                    "outputs": [
+                        {
+                            "name": "",
+                            "type": "bool"
+                        }
+                    ],
+                    "payable": false,
+                    "stateMutability": "nonpayable",
+                    "type": "function"
+                },
+                {
+                    "constant": true,
+                    "inputs": [],
+                    "name": "decimals",
+                    "outputs": [
+                        {
+                            "name": "",
+                            "type": "uint8"
+                        }
+                    ],
+                    "payable": false,
+                    "stateMutability": "view",
+                    "type": "function"
+                }
+            ],
+            celoContractAddress
+        );
+        const decimals = await contract.methods.decimals().call();
+        const amount = ethers.utils.parseUnits(amountInput, decimals);
         statusElement.textContent = 'Transaction pending...';
         statusElement.style.color = '#007bff';
 
-        const txHash = await window.ethereum.request({
-            method: 'eth_sendTransaction',
-            params: [transactionParameters],
-        });
-
-
-        statusElement.textContent = 'Transaction sent successfully! Transaction Hash: ' + txHash;
-          statusElement.style.color = '#28a745';
-           // Use a web3 method to get the transaction receipt to ensure the transaction has been included in a block
-              web3.eth.getTransactionReceipt(txHash)
-           .then(receipt => {
-              if (receipt && receipt.status) {
-            statusElement.textContent = 'Transaction confirmed successfully! Transaction Hash: ' + txHash;
-               statusElement.style.color = '#28a745';
-           } else {
-            statusElement.textContent = 'Transaction failed or not found. Please check the transaction hash in your wallet.';
-             statusElement.style.color = 'red'
-            }
-
-           })
-          .catch(error => {
-              console.error("Error getting transaction receipt:", error);
-               statusElement.textContent = 'Error getting transaction receipt: ' + error.message;
-            statusElement.style.color = 'red'
+        const tx = await contract.methods.transfer(receiverAddress, amount).send({ from: senderAddress });
+        statusElement.textContent = 'Transaction sent successfully! Transaction Hash: ' + tx.transactionHash;
+        statusElement.style.color = '#28a745';
+        web3.eth.getTransactionReceipt(tx.transactionHash)
+            .then(receipt => {
+                if (receipt && receipt.status) {
+                    statusElement.textContent = 'Transaction confirmed successfully! Transaction Hash: ' + tx.transactionHash;
+                    statusElement.style.color = '#28a745';
+                } else {
+                    statusElement.textContent = 'Transaction failed or not found. Please check the transaction hash in your wallet.';
+                    statusElement.style.color = 'red'
+                }
+            })
+            .catch(error => {
+                console.error("Error getting transaction receipt:", error);
+                statusElement.textContent = 'Error getting transaction receipt: ' + error.message;
+                statusElement.style.color = 'red'
             });
-
     } catch (error) {
         console.error(error);
-        statusElement.textContent = 'Transaction failed. ' + error.message;
-          statusElement.style.color = 'red'
+        if (error.message.includes('Returned values aren\'t valid')) {
+             statusElement.textContent = 'Error: Connect manually to the Celo Network. Verify the network on Metamask.';
+             statusElement.style.color = 'red';
+        }else if (error.message.includes('MetaMask Tx Signature: User denied transaction signature.')){
+             statusElement.textContent = 'Error: You must accept the transaction to complete the purchase.';
+             statusElement.style.color = 'red';
+        }else{
+              statusElement.textContent = 'Transaction failed. ' + error.message;
+             statusElement.style.color = 'red';
+        }
+
     }
 });
- // Add event listeners to toggle section content
- document.querySelectorAll('.section h2').forEach(header => {
-    header.addEventListener('click', function() {
-      const section = this.parentElement;
-         // If the section is active, remove the 'active' class and hide the content
+
+// Add event listeners to toggle section content
+document.querySelectorAll('section h2').forEach(header => {
+    header.addEventListener('click', function () {
+        const section = this.parentElement;
         if (section.classList.contains('active')) {
-             section.classList.remove('active');
-           } else {
-            // If the section is not active, first remove 'active' from any other open section, then add it to the clicked one.
-             document.querySelectorAll('.section.active').forEach(el => el.classList.remove('active'));
-               section.classList.add('active');
+            section.classList.remove('active');
+        } else {
+            document.querySelectorAll('section.active').forEach(el => el.classList.remove('active'));
+            section.classList.add('active');
         }
-  });
- });
+    });
+});
+
 // --- Function to get token balance ---
 async function getTokenBalance(rpc, contractAddress, address, symbol, balanceElement) {
     try {
         const provider = new ethers.providers.JsonRpcProvider(rpc);
         const contract = new ethers.Contract(
             contractAddress,
-             [
+            [
                 "function balanceOf(address) view returns (uint256)",
                 "function decimals() view returns (uint8)"
             ],
@@ -202,25 +247,14 @@ async function getTokenBalance(rpc, contractAddress, address, symbol, balanceEle
         balanceElement.textContent = "Error loading balance";
     }
 }
-
-
-// --- Fetch balances for Celo and Fuse on load ---
+// --- Fetch balances for Celo on load ---
 document.addEventListener('DOMContentLoaded', () => {
-     const targetAddress = "0x9232B44496F36c033b02645Dcedb09d0a69a19c2";
-    // Fetch Celo balance
+    const targetAddress = "0x9232B44496F36c033b02645Dcedb09d0a69a19c2";
     getTokenBalance(
         "https://forno.celo.org",
         "0x62b8b11039fcfe5ab0c56e502b1c372a3d2a9c7a",
-         targetAddress,
+        targetAddress,
         "G$",
         celoBalanceElement
-    );
-    // Fetch Fuse balance
-    getTokenBalance(
-        "https://rpc.fuse.io",
-        "0x495d133B938596C9984d462F007B676bDc57eCEC",
-         targetAddress,
-        "G$",
-        fuseBalanceElement
     );
 });
